@@ -2,6 +2,11 @@ resource "aws_ecs_cluster" "epoch_app_cluster" {
   name = var.epoch_app_cluster_name
 }
 
+data "aws_ecr_image" "epoch_app_image" {
+  image_tag       = "latest"
+  repository_name = var.ecr_repo_name
+}
+
 resource "aws_default_vpc" "default_vpc" {}
 
 resource "aws_subnet" "subnet_d" {
@@ -130,7 +135,7 @@ resource "aws_ecs_task_definition" "epoch_app_task" {
   [
     {
       "name": "${var.epoch_app_task_name}",
-      "image": "${var.ecr_repo_url}",
+      "image": "${data.aws_ecr_image.epoch_app_image.id}",
       "essential": true,
       "portMappings": [
         {

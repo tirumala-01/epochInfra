@@ -45,12 +45,13 @@ module "ecsCluster" {
 
   ecr_repo_url           = module.ecrRepo.repository_url
   epoch_app_service_name = local.epoch_app_service_name
+  ecr_repo_name          = local.ecr_repo_name
 
 }
 
 module "elastiCache" {
-  source           = "./modules/elasticache"
-  elasticache_name = local.elasticache_name
-  subnet_ids       = [module.ecsCluster.subnet_d_id, module.ecsCluster.subnet_e_id, module.ecsCluster.subnet_f_id]
-  security_group_id = [module.ecsCluster.load_balancer_security_group_id, module.ecsCluster.service_security_group_id ]
+  source            = "./modules/elasticache"
+  elasticache_name  = local.elasticache_name
+  subnet_ids        = [module.ecsCluster.subnet_d_id, module.ecsCluster.subnet_e_id, module.ecsCluster.subnet_f_id]
+  security_group_id = [module.ecsCluster.load_balancer_security_group_id, module.ecsCluster.service_security_group_id]
 }

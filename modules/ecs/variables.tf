@@ -3,6 +3,11 @@ variable "epoch_app_cluster_name" {
   type        = string
 }
 
+variable "ecr_repo_name" {
+  description = "ECR Repo Name"
+  type        = string
+}
+
 variable "availability_zones" {
   description = "us-east-1 AZs"
   type        = list(string)
