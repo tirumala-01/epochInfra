@@ -18,4 +18,8 @@ locals {
   epoch_app_service_name = "epoch-app-service"
 
   elasticache_name = "epoch-app-elasticache"
+
+  rds_credentials_secret_id = "epochapp/rds/credentials"
+  epoch_app_rds_db_name     = "epochapp"
+  epoch_app_rds_identifier  = "epochapp-rds-instance"
 }

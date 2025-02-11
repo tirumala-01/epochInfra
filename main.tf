@@ -56,3 +56,14 @@ module "elastiCache" {
   subnet_ids        = [module.ecsCluster.subnet_d_id, module.ecsCluster.subnet_e_id, module.ecsCluster.subnet_f_id]
   security_group_id = [module.ecsCluster.load_balancer_security_group_id, module.ecsCluster.service_security_group_id]
 }
+
+
+module "rds" {
+  source = "./modules/rds"
+
+  rds_credentials_secret_id = local.rds_credentials_secret_id
+  epoch_app_rds_db_name     = local.epoch_app_rds_db_name
+  epoch_app_rds_identifier  = local.epoch_app_rds_identifier
+
+
+}
