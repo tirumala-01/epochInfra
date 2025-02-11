@@ -133,7 +133,7 @@ resource "aws_ecs_task_definition" "epoch_app_task" {
   [
     {
       "name": "${var.epoch_app_task_name}",
-      "image": "${data.aws_ecr_image.epoch_app_image.id}",
+      "image": "${var.ecr_repo_url}:latest",
       "essential": true,
       "portMappings": [
         {
