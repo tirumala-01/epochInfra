@@ -33,6 +33,11 @@ variable "ecs_task_execution_role_name" {
   type        = string
 }
 
+variable "ecs_task_role_name" {
+  description = "ECS Task Execution Role Name"
+  type        = string
+}
+
 variable "epoch_app_task_famliy" {
   description = "ECS Task Family"
   type        = string

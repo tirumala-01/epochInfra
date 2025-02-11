@@ -10,6 +10,7 @@ locals {
   container_port                 = 80
 
   ecs_task_execution_role_name = "epoch-app-task-execution-role"
+  ecs_task_role_name           = "epoch-app-ecs-task-role-policy"
 
   epoch_app_task_famliy = "epoch-app-task"
   epoch_app_task_name   = "epoch-app-task"

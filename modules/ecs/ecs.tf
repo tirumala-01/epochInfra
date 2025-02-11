@@ -2,11 +2,6 @@ resource "aws_ecs_cluster" "epoch_app_cluster" {
   name = var.epoch_app_cluster_name
 }
 
-data "aws_ecr_image" "epoch_app_image" {
-  image_tag       = "latest"
-  repository_name = var.ecr_repo_name
-}
-
 resource "aws_default_vpc" "default_vpc" {}
 
 resource "aws_subnet" "subnet_d" {
@@ -95,6 +90,21 @@ resource "aws_iam_role" "ecs_task_execution_role" {
   assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
 }
 
+resource "aws_iam_role" "ecs_task_role" {
+  name               = var.ecs_task_role_name
+  assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
+}
+
+resource "aws_iam_policy" "ssm_access" {
+  name   = "ecs-ssm-access"
+  policy = data.aws_iam_policy_document.ssm_access_policy.json
+}
+
+resource "aws_iam_role_policy_attachment" "attach_ssm_policy" {
+  role       = aws_iam_role.ecs_task_role.name
+  policy_arn = aws_iam_policy.ssm_access.arn
+}
+
 resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_policy" {
   role       = aws_iam_role.ecs_task_execution_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
@@ -109,19 +119,7 @@ resource "aws_iam_policy" "ecs_cloudwatch_logs_policy" {
   name        = "ECSCloudWatchLogsPolicy"
   description = "Allows ECS tasks to write logs to CloudWatch"
 
-  policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect = "Allow",
-        Action = [
-          "logs:CreateLogStream",
-          "logs:PutLogEvents"
-        ],
-        Resource = "${aws_cloudwatch_log_group.epoch_app_log_group.arn}:*"
-      }
-    ]
-  })
+  policy = data.aws_iam_policy_document.cloudwatch_logs_policy.json
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_logs_attach" {
@@ -161,6 +159,7 @@ resource "aws_ecs_task_definition" "epoch_app_task" {
   memory                   = 512
   cpu                      = 256
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
+  task_role_arn            = aws_iam_role.ecs_task_role.arn
 }
 
 

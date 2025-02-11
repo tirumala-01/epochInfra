@@ -39,6 +39,7 @@ module "ecsCluster" {
   container_port                 = local.container_port
 
   ecs_task_execution_role_name = local.ecs_task_execution_role_name
+  ecs_task_role_name           = local.ecs_task_role_name
 
   epoch_app_task_famliy = local.epoch_app_task_famliy
   epoch_app_task_name   = local.epoch_app_task_name
