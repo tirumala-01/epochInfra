@@ -64,6 +64,9 @@ module "rds" {
   rds_credentials_secret_id = local.rds_credentials_secret_id
   epoch_app_rds_db_name     = local.epoch_app_rds_db_name
   epoch_app_rds_identifier  = local.epoch_app_rds_identifier
+}
 
-
+module "s3" {
+  source                  = "./modules/s3"
+  data_source_bucket_name = local.data_source_bucket_name
 }

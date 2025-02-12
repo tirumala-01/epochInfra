@@ -22,4 +22,6 @@ locals {
   rds_credentials_secret_id = "epochapp/rds/credentials"
   epoch_app_rds_db_name     = "epochapp"
   epoch_app_rds_identifier  = "epochapp-rds-instance"
+
+  data_source_bucket_name = "mydatasource-epochapp-demo"
 }
