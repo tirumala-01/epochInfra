@@ -47,7 +47,8 @@ module "ecsCluster" {
   ecr_repo_url           = module.ecrRepo.repository_url
   epoch_app_service_name = local.epoch_app_service_name
   ecr_repo_name          = local.ecr_repo_name
-
+  redis_url              = module.elastiCache.configuration_endpoint
+  rds_url                = module.rds.rds_connection_url
 }
 
 module "elastiCache" {

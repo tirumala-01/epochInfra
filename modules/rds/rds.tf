@@ -41,4 +41,3 @@ resource "aws_db_instance" "epoch_app_rds" {
   publicly_accessible    = true
   vpc_security_group_ids = [aws_security_group.rds_security_group.id]
 }
-

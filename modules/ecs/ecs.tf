@@ -132,25 +132,35 @@ resource "aws_ecs_task_definition" "epoch_app_task" {
   container_definitions    = <<DEFINITION
   [
     {
-      "name": "${var.epoch_app_task_name}",
-      "image": "${var.ecr_repo_url}:latest",
-      "essential": true,
-      "portMappings": [
-        {
-          "containerPort": ${var.container_port},
-          "hostPort": ${var.container_port}
-        }
-      ],
-      "logConfiguration": {
-          "logDriver": "awslogs",
-          "options": {
-            "awslogs-group": "${aws_cloudwatch_log_group.epoch_app_log_group.name}",
-            "awslogs-region": "us-east-1",
-            "awslogs-stream-prefix": "ecs"
-          }
-      },
-      "memory": 512,
-      "cpu": 256
+        "name": "${var.epoch_app_task_name}",
+        "image": "${var.ecr_repo_url}:latest",
+        "essential": true,
+        "portMappings": [
+            {
+                "containerPort": ${var.container_port},
+                "hostPort": ${var.container_port}
+            }
+        ],
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+                "awslogs-group": "${aws_cloudwatch_log_group.epoch_app_log_group.name}",
+                "awslogs-region": "us-east-1",
+                "awslogs-stream-prefix": "ecs"
+            }
+        },
+        "memory": 512,
+        "cpu": 256,
+        "environment": [
+            {
+                "name": "REDIS_HOST",
+                "value": "${aws_ssm_parameter.redis_url.value}"
+            },
+            {
+                "name": "DATABASE_URL",
+                "value": "${aws_ssm_parameter.rds_url.value}"
+            }
+        ]
     }
   ]
   DEFINITION
@@ -162,6 +172,18 @@ resource "aws_ecs_task_definition" "epoch_app_task" {
   task_role_arn            = aws_iam_role.ecs_task_role.arn
 }
 
+
+resource "aws_ssm_parameter" "redis_url" {
+  name  = "/epoch/redis/url"
+  type  = "SecureString"
+  value = var.redis_url
+}
+
+resource "aws_ssm_parameter" "rds_url" {
+  name  = "/epoch/rds/url"
+  type  = "SecureString"
+  value = var.rds_url
+}
 
 
 

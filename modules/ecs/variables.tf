@@ -59,3 +59,17 @@ variable "epoch_app_service_name" {
   description = "ECS Service Name"
   type        = string
 }
+
+
+variable "redis_url" {
+  type        = string
+  sensitive   = true
+  description = "Redis URL"
+}
+
+
+variable "rds_url" {
+  type        = string
+  sensitive   = true
+  description = "Redis URL"
+}
